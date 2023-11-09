@@ -13,12 +13,14 @@ public class AlunoService {
 
     private final AlunoRepository alunoRepository;
 
-    public void salvar(Aluno aluno) {
+    public Aluno salvar(Aluno aluno) {
         alunoRepository.save(aluno);
+        return aluno;
     }
 
-    public void atualizar(Aluno aluno) {
+    public Aluno atualizar(Aluno aluno) {
         alunoRepository.save(aluno);
+        return aluno;
     }
 
     public void excluir(Long id) {

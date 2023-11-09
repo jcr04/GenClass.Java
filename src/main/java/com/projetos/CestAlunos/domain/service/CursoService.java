@@ -13,12 +13,14 @@ public class CursoService {
 
     private final CursoRepository cursoRepository;
 
-    public void salvar(Curso curso) {
+    public Curso salvar(Curso curso) {
         cursoRepository.save(curso);
+        return curso;
     }
 
-    public void atualizar(Curso curso) {
+    public Curso atualizar(Curso curso) {
         cursoRepository.save(curso);
+        return curso;
     }
 
     public void excluir(Long id) {
