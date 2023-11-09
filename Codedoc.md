@@ -12,7 +12,6 @@ Este documento fornece uma visão geral técnica do Sistema de Gestão de Alunos
 - **Service**: Contém a lógica de negócios e chama os métodos do repositório.
 - **Repository**: Abstrai a camada de dados e fornece métodos para acessar o banco de dados.
 - **Entity**: Representa as tabelas do banco de dados e contém anotações JPA para mapeamento ORM.
-- **DTO (Data Transfer Object)**: Utilizado para transferir dados entre sub-sistemas da aplicação.
 - **Database**: PostgreSQL é usado como o sistema de gerenciamento de banco de dados.
 
 
