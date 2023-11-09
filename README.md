@@ -2,6 +2,9 @@
 
 O Sistema de Gestão de Alunos é uma API REST desenvolvida com Spring Boot para gerenciar as informações dos alunos da Faculdade CEST. A aplicação permite operações CRUD para entidades como Alunos e Cursos.
 
+### Documentação Técnica
+Leia [Codedoc.md}(https://github.com/jcr04/GenClass.Java/blob/main/Codedoc.md)
+
 ## Funcionalidades
 
 - **Cadastrar Aluno**: Adiciona um novo aluno ao sistema.
