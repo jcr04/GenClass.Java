@@ -51,5 +51,26 @@ public class AvaliacaoController {
         return new ResponseEntity<>(avaliacoes, HttpStatus.OK);
     }
 
+    @PostMapping("/lancar")
+    public ResponseEntity<?> lancarNotaEFrequencia(@RequestBody Avaliacao avaliacao) {
+        try {
+            Avaliacao avaliacaoSalva = avaliacaoService.registrarAvaliacao(avaliacao);
+            return new ResponseEntity<>(avaliacaoSalva, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Método adicional para alunos consultarem suas notas
+    @GetMapping("/aluno/{alunoId}")
+    public ResponseEntity<List<Avaliacao>> consultarNotasDoAluno(@PathVariable Long alunoId) {
+        List<Avaliacao> avaliacoesDoAluno = avaliacaoService.buscarAvaliacoesPorAlunoId(alunoId);
+        if (!avaliacoesDoAluno.isEmpty()) {
+            return new ResponseEntity<>(avaliacoesDoAluno, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // Adicione outros métodos conforme necessário
 }

@@ -3,7 +3,6 @@ package com.projetos.CestAlunos.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,18 +25,27 @@ public class Professor {
 
     private String departamento;
 
+    // Novos campos
+    private String email;
+    private String telefone;
+
     // Relacionamento ManyToMany com a entidade Curso
-    @ManyToMany
-    @JoinTable(
-            name = "professor_curso",
-            joinColumns = @JoinColumn(name = "professor_id"),
-            inverseJoinColumns = @JoinColumn(name = "curso_id")
-    )
+    @ManyToMany(mappedBy = "professores")
     private Set<Curso> cursos = new HashSet<>();
 
     @OneToMany(mappedBy = "professor")
-    private Set<Avaliacao> avaliacoes = new HashSet<>();
+    private Set<Avaliacao> avaliacoes;
 
+    // Métodos para adicionar ou remover cursos
+    public void adicionarCurso(Curso curso) {
+        cursos.add(curso);
+        curso.getProfessores().add(this);
+    }
 
-    // Outros campos e métodos conforme necessário
+    public void removerCurso(Curso curso) {
+        cursos.remove(curso);
+        curso.getProfessores().remove(this);
+    }
+
+    // Outros métodos conforme necessário, por exemplo, para adicionar ou remover avaliações
 }

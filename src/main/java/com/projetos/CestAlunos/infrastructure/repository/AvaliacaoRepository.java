@@ -32,4 +32,10 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     @Query("DELETE FROM Avaliacao a WHERE a.id = :avaliacaoId")
     void excluirAvaliacao(Long avaliacaoId);
 
+
+    // Adicionado: busca avaliações por ID do professor
+    @Query("SELECT a FROM Avaliacao a WHERE a.professor.id = :professorId")
+    List<Avaliacao> buscarAvaliacoesPorProfessorId(Long professorId);
+
+
 }

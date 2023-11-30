@@ -1,7 +1,9 @@
 package com.projetos.CestAlunos.application.controllers;
 
 import com.projetos.CestAlunos.domain.entity.Aluno;
+import com.projetos.CestAlunos.domain.entity.Avaliacao;
 import com.projetos.CestAlunos.domain.service.AlunoService;
+import com.projetos.CestAlunos.infrastructure.exceptions.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +52,16 @@ public class AlunoController {
     public ResponseEntity<List<Aluno>> buscarTodos() {
         List<Aluno> alunos = alunoService.buscarTodos();
         return new ResponseEntity<>(alunos, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/notas")
+    public ResponseEntity<List<Avaliacao>> consultarNotas(@PathVariable Long id) {
+        try {
+            List<Avaliacao> notas = alunoService.consultarNotas(id);
+            return new ResponseEntity<>(notas, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

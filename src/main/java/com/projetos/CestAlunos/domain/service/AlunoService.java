@@ -1,8 +1,10 @@
 package com.projetos.CestAlunos.domain.service;
 
 import com.projetos.CestAlunos.domain.entity.Aluno;
+import com.projetos.CestAlunos.domain.entity.Avaliacao;
 import com.projetos.CestAlunos.infrastructure.exceptions.EntityNotFoundException;
 import com.projetos.CestAlunos.infrastructure.repository.AlunoRepository;
+import com.projetos.CestAlunos.infrastructure.repository.AvaliacaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
+    private final AvaliacaoRepository avaliacaoRepository;
 
     @Transactional
     public Aluno salvar(Aluno aluno) {
@@ -27,7 +30,11 @@ public class AlunoService {
                     alunoExistente.setNome(aluno.getNome());
                     alunoExistente.setMatricula(aluno.getMatricula());
                     alunoExistente.setCurso(aluno.getCurso());
-                    // Adicione outras propriedades conforme necessário
+                    alunoExistente.setDataNascimento(aluno.getDataNascimento());
+                    alunoExistente.setEmail(aluno.getEmail());
+                    alunoExistente.setTelefone(aluno.getTelefone());
+                    alunoExistente.setEndereco(aluno.getEndereco());
+                    alunoExistente.setSexo(aluno.getSexo());
                     return alunoRepository.save(alunoExistente);
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado com ID: " + aluno.getId()));
@@ -48,6 +55,14 @@ public class AlunoService {
     @Transactional(readOnly = true)
     public List<Aluno> buscarTodos() {
         return alunoRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Avaliacao> consultarNotas(Long alunoId) {
+        if (!alunoRepository.existsById(alunoId)) {
+            throw new EntityNotFoundException("Aluno não encontrado com ID: " + alunoId);
+        }
+        return avaliacaoRepository.buscarAvaliacoesPorAlunoId(alunoId);
     }
 
 }

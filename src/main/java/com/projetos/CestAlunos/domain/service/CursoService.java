@@ -6,8 +6,8 @@ import com.projetos.CestAlunos.infrastructure.repository.CursoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +17,7 @@ public class CursoService {
 
     @Transactional
     public Curso salvar(Curso curso) {
+        // Validações e lógicas antes de salvar, se necessário
         return cursoRepository.save(curso);
     }
 
@@ -26,7 +27,7 @@ public class CursoService {
                 .map(cursoExistente -> {
                     cursoExistente.setNome(curso.getNome());
                     cursoExistente.setCodigo(curso.getCodigo());
-                    // Adicione outras propriedades conforme necessário
+                    // Atualizar outras propriedades conforme necessário
                     return cursoRepository.save(cursoExistente);
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + curso.getId()));
@@ -40,8 +41,9 @@ public class CursoService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Curso> buscarPorId(Long id) {
-        return cursoRepository.findById(id);
+    public Curso buscarPorId(Long id) {
+        return cursoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + id));
     }
 
     @Transactional(readOnly = true)
@@ -49,5 +51,20 @@ public class CursoService {
         return cursoRepository.findAll();
     }
 
-    // Aqui, você pode adicionar mais métodos conforme necessário, por exemplo, para buscar cursos por professor
+    @Transactional(readOnly = true)
+    public List<Curso> buscarPorNome(String nome) {
+        return cursoRepository.findByNomeContaining(nome);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Curso> buscarCursosPorProfessorId(Long professorId) {
+        return cursoRepository.findCursosByProfessorId(professorId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Object[]> buscarCursoComQuantidadeDeAlunos() {
+        return cursoRepository.findCursoWithCountOfAlunos();
+    }
+
+    // Outros métodos conforme necessário
 }

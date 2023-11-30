@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/cursos")
+@CrossOrigin(origins = "*")
 public class CursoController {
 
     private final CursoService cursoService;
@@ -20,36 +20,37 @@ public class CursoController {
     }
 
     @PostMapping
-    public ResponseEntity<Curso> salvar(@RequestBody Curso curso) {
-        Curso cursoSalvo = cursoService.salvar(curso);
-        return new ResponseEntity<>(cursoSalvo, HttpStatus.CREATED);
+    public ResponseEntity<Curso> criarCurso(@RequestBody Curso curso) {
+        Curso novoCurso = cursoService.salvar(curso);
+        return new ResponseEntity<>(novoCurso, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> atualizar(@PathVariable Long id, @RequestBody Curso curso) {
+    public ResponseEntity<Curso> atualizarCurso(@PathVariable Long id, @RequestBody Curso curso) {
         curso.setId(id);
         Curso cursoAtualizado = cursoService.atualizar(curso);
         return ResponseEntity.ok(cursoAtualizado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> deletarCurso(@PathVariable Long id) {
         cursoService.excluir(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Curso> buscarPorId(@PathVariable Long id) {
-        return cursoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Curso> obterCursoPorId(@PathVariable Long id) {
+        Curso curso = cursoService.buscarPorId(id);
+        return curso != null ? ResponseEntity.ok(curso) : ResponseEntity.notFound().build();
     }
+
 
     @GetMapping
-    public ResponseEntity<List<Curso>> buscarTodos() {
-        List<Curso> cursos = cursoService.buscarTodos();
-        return ResponseEntity.ok(cursos);
+    public ResponseEntity<List<Curso>> listarTodosCursos() {
+        List<Curso> todosCursos = cursoService.buscarTodos();
+        return ResponseEntity.ok(todosCursos);
     }
 
-    // Outros métodos conforme necessário
+    // Adicione aqui métodos para endpoints adicionais conforme o fluxo do projeto
+
 }

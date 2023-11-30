@@ -7,14 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
     @Query("SELECT p FROM Professor p WHERE p.nome = :nome")
     List<Professor> buscarPorNome(@Param("nome") String nome);
 
-    @Modifying
-    @Query(value = "INSERT INTO professor (nome, matricula, departamento) VALUES (:nome, :matricula, :departamento)", nativeQuery = true)
-    void inserirProfessor(@Param("nome") String nome, @Param("matricula") String matricula, @Param("departamento") String departamento);
+    // Método para buscar professores por curso
+    @Query("SELECT p FROM Professor p JOIN p.cursos c WHERE c.nome = :nomeCurso")
+    List<Professor> buscarPorNomeCurso(@Param("nomeCurso") String nomeCurso);
 
+    // Método para buscar um professor por matrícula
+    Optional<Professor> findByMatricula(String matricula);
 
 }

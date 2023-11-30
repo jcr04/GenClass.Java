@@ -1,10 +1,10 @@
-// Avaliacao.java
 package com.projetos.CestAlunos.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -26,5 +26,13 @@ public class Avaliacao {
 
     private double nota;
 
-    // Outros campos conforme necessário, como data da avaliação, comentários, etc.
+    @Temporal(TemporalType.DATE)
+    private Date dataAvaliacao;
+
+    private boolean presenca;
+
+    @Column(length = 500) // Comentários podem ser longos, então definimos um limite adequado
+    private String comentarios;
+
+    // Outros campos e métodos conforme necessário
 }
