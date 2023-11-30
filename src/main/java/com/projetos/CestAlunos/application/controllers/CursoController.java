@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/cursos")
@@ -26,30 +27,29 @@ public class CursoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Curso> atualizar(@PathVariable Long id, @RequestBody Curso curso) {
+        curso.setId(id);
         Curso cursoAtualizado = cursoService.atualizar(curso);
-        return new ResponseEntity<>(cursoAtualizado, HttpStatus.OK);
+        return ResponseEntity.ok(cursoAtualizado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         cursoService.excluir(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Curso> buscarPorId(@PathVariable Long id) {
-        Curso curso = cursoService.buscarPorId(id);
-        if (curso != null) {
-            return new ResponseEntity<>(curso, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return cursoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
     public ResponseEntity<List<Curso>> buscarTodos() {
         List<Curso> cursos = cursoService.buscarTodos();
-        return new ResponseEntity<>(cursos, HttpStatus.OK);
+        return ResponseEntity.ok(cursos);
     }
 
+    // Outros métodos conforme necessário
 }
