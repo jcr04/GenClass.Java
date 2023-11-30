@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/alunos")
@@ -38,13 +40,11 @@ public class AlunoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Aluno> buscarPorId(@PathVariable Long id) {
-        Aluno aluno = alunoService.buscarPorId(id);
-        if (aluno != null) {
-            return new ResponseEntity<>(aluno, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Optional<Aluno> alunoOptional = alunoService.buscarPorId(id);
+
+        return alunoOptional.map(aluno -> new ResponseEntity<>(aluno, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
 
     @GetMapping
     public ResponseEntity<List<Aluno>> buscarTodos() {
