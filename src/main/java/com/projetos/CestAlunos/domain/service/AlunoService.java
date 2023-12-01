@@ -29,7 +29,7 @@ public class AlunoService {
                 .map(alunoExistente -> {
                     alunoExistente.setNome(aluno.getNome());
                     alunoExistente.setMatricula(aluno.getMatricula());
-                    alunoExistente.setCurso(aluno.getCurso());
+                    alunoExistente.setCursoNome(aluno.getCursoNome());
                     alunoExistente.setDataNascimento(aluno.getDataNascimento());
                     alunoExistente.setEmail(aluno.getEmail());
                     alunoExistente.setTelefone(aluno.getTelefone());

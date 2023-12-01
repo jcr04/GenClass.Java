@@ -1,42 +1,46 @@
 package com.projetos.CestAlunos.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Professor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     @Column(nullable = false)
     private String nome;
 
+    @NotEmpty
     @Column(unique = true, nullable = false)
     private String matricula;
 
     private String departamento;
 
-    // Novos campos
+    @Email
     private String email;
+
     private String telefone;
 
-    // Relacionamento ManyToMany com a entidade Curso
-    @ManyToMany(mappedBy = "professores")
+    @ManyToMany(mappedBy = "professores", fetch = FetchType.LAZY)
     private Set<Curso> cursos = new HashSet<>();
 
-    @OneToMany(mappedBy = "professor")
-    private Set<Avaliacao> avaliacoes;
+    @OneToMany(mappedBy = "professor", fetch = FetchType.LAZY)
+    private Set<Avaliacao> avaliacoes = new HashSet<>();
 
-    // Métodos para adicionar ou remover cursos
     public void adicionarCurso(Curso curso) {
         cursos.add(curso);
         curso.getProfessores().add(this);
@@ -47,5 +51,6 @@ public class Professor {
         curso.getProfessores().remove(this);
     }
 
-    // Outros métodos conforme necessário, por exemplo, para adicionar ou remover avaliações
+
+    // Outros métodos conforme necessário
 }

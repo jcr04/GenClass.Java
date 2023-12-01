@@ -1,16 +1,15 @@
 package com.projetos.CestAlunos.domain.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Aluno {
 
     @Id
@@ -24,7 +23,7 @@ public class Aluno {
     private String matricula;
 
     @Column(nullable = false)
-    private String curso;
+    private String cursoNome; // Changed from 'curso' to 'cursoNome'
 
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
@@ -41,6 +40,7 @@ public class Aluno {
     private Date dataMatricula;
 
     @ManyToMany(mappedBy = "alunos")
-    private Set<Curso> cursos;
-    // Outros campos e métodos conforme necessário
+    private Set<Curso> cursos = new HashSet<>(); // Initialized the Set
+
+    // Constructors, getters, and setters are handled by Lombok annotations
 }
